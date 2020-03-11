@@ -2207,6 +2207,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -2217,7 +2220,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   },
   data: function data() {
     return {
-      posts: null
+      posts: null,
+      loading: true
     };
   },
   mounted: function mounted() {
@@ -2236,20 +2240,22 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             case 3:
               response = _context.sent;
               _this.posts = response.data;
-              _context.next = 10;
+              _this.loading = false;
+              _context.next = 12;
               break;
 
-            case 7:
-              _context.prev = 7;
+            case 8:
+              _context.prev = 8;
               _context.t0 = _context["catch"](0);
               console.log("Unable to fetch posts");
+              _this.loading = false;
 
-            case 10:
+            case 12:
             case "end":
               return _context.stop();
           }
         }
-      }, _callee, null, [[0, 7]]);
+      }, _callee, null, [[0, 8]]);
     }))();
   }
 });
@@ -21159,9 +21165,11 @@ var render = function() {
     [
       _c("NewPost"),
       _vm._v(" "),
-      _vm._l(_vm.posts.data, function(post) {
-        return _c("Post", { key: post.data.post_id, attrs: { post: post } })
-      })
+      _vm.loading
+        ? _c("p", [_vm._v("Loading posts...")])
+        : _vm._l(_vm.posts.data, function(post) {
+            return _c("Post", { key: post.data.post_id, attrs: { post: post } })
+          })
     ],
     2
   )
