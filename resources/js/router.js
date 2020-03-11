@@ -1,6 +1,7 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import NewsFeed from "./views/NewsFeed.vue";
+import UserShow from "./views/Users/Show.vue";
 
 Vue.use(VueRouter);
 
@@ -11,6 +12,11 @@ export default new VueRouter({
             path: "/",
             name: "home",
             component: NewsFeed
+        },
+        {
+            path: "/users/:userId",
+            name: "user.show",
+            component: UserShow
         }
     ]
 });
