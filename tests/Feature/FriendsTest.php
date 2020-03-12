@@ -2,11 +2,10 @@
 
 namespace Tests\Feature;
 
-use App\User;
 use App\Friend;
-use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithFaker;
+use App\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class FriendsTest extends TestCase
 {
@@ -21,10 +20,9 @@ class FriendsTest extends TestCase
         $anotherUser = factory(User::class)->create();
 
         $response = $this->post('/api/friend-request', [
-            'friend_id' => $anotherUser->id
+            'friend_id' => $anotherUser->id,
         ])->assertStatus(200);
 
-        
         $friendRequest = Friend::first();
 
         $this->assertNotNull($friendRequest);
@@ -37,10 +35,31 @@ class FriendsTest extends TestCase
                 'friend_request_id' => $friendRequest->id,
                 'attributes' => [
                     'confirmed_at' => null,
-                ]
+                ],
             ],
             'links' => [
-                'self' => url('/users/' . $anotherUser->id)
+                'self' => url('/users/' . $anotherUser->id),
+            ],
+        ]);
+    }
+
+    /** @test */
+    public function only_valid_users_can_be_friend_requested()
+    {
+        // $this->withoutExceptionHandling();
+
+        $this->actingAs($user = factory(User::class)->create(), 'api');
+
+        $response = $this->post('/api/friend-request', [
+            'friend_id' => 23,
+        ])->assertStatus(404);
+
+        $this->assertNull(Friend::first());
+        $response->assertJson([
+            'errors' => [
+                'code' => 404,
+                'title' => 'User Not Found',
+                'detail' => 'Unable to find user with given information',
             ]
         ]);
     }
