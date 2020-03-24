@@ -23,6 +23,14 @@
                     {{ user.data.attributes.name }}
                 </p>
             </div>
+
+            <div
+                class="absolute flex items-center bottom-0 right-0 mb-4 mr-12 z-20"
+            >
+                <button class="py-1 px-3 bg-gray-400 rounded">
+                    Add Friend
+                </button>
+            </div>
         </div>
 
         <p v-if="loading">Loading posts...</p>
@@ -40,6 +48,7 @@
 
 <script>
 import Post from "../../components/Post";
+import { mapGetters } from "vuex";
 export default {
     name: "Show",
     components: {
@@ -47,31 +56,17 @@ export default {
     },
     data() {
         return {
-            user: null,
             posts: null,
             loading: true
         };
     },
-    async mounted() {
-        try {
-            let userResponse = axios.get(
-                "/api/users/" + this.$route.params.userId
-            );
-            let postResponse = axios.get(
-                "/api/users/" + this.$route.params.userId + "/posts"
-            );
-
-            let [response1, response2] = await Promise.all([
-                userResponse,
-                postResponse
-            ]);
-            this.user = response1.data;
-            this.posts = response2.data;
-        } catch (err) {
-            console.log("Unable to fetch user from database");
-        } finally {
-            this.loading = false;
-        }
+    mounted() {
+        this.$store.dispatch("fetchUser", this.$route.params.userId);
+    },
+    computed: {
+        ...mapGetters({
+            user: "user"
+        })
     }
 };
 </script>
