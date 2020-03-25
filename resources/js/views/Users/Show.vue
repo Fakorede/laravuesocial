@@ -1,5 +1,8 @@
 <template>
-  <div class="flex flex-col items-center">
+  <div
+    class="flex flex-col items-center"
+    v-if="status.user === 'success' && user"
+  >
     <div class="relative mb-8">
       <div class="w-100 h-64 overflow-hidden z-10">
         <img
@@ -62,7 +65,9 @@
       </div>
     </div>
 
-    <p v-if="loading">Loading posts...</p>
+    <div v-if="status.posts === 'loading'">Loading posts...</div>
+
+    <div v-else-if="posts.length < 1">No posts found!</div>
 
     <Post
       v-else
@@ -71,7 +76,6 @@
       :post="post"
     />
 
-    <p v-if="!loading && posts.data.length < 1">No posts found!</p>
   </div>
 </template>
 
@@ -83,18 +87,15 @@ export default {
   components: {
     Post
   },
-  data() {
-    return {
-      posts: null,
-      loading: true
-    };
-  },
   mounted() {
     this.$store.dispatch("fetchUser", this.$route.params.userId);
+    this.$store.dispatch("fetchUserPosts", this.$route.params.userId);
   },
   computed: {
     ...mapGetters({
       user: "user",
+      posts: "posts",
+      status: "status",
       friendButtonText: "friendButtonText"
     })
   }
