@@ -2,7 +2,8 @@ import Axios from "axios";
 
 const state = {
     newsPosts: null,
-    newsPostsStatus: null
+    newsPostsStatus: null,
+    postMessage: ""
 };
 
 const getters = {
@@ -13,6 +14,9 @@ const getters = {
         return {
             newsPostsStatus: state.newsPostsStatus
         };
+    },
+    postMessage: state => {
+        return state.postMessage;
     }
 };
 
@@ -29,6 +33,15 @@ const actions = {
             .catch(error => {
                 commit("setPostsStatus", "error");
             });
+    },
+    postMessage({ commit, state }) {
+        axios
+            .post("/api/posts", { body: state.postMessage })
+            .then(res => {
+                commit("pushPost", res.data);
+                commit("updateMessage", "");
+            })
+            .catch(error => {});
     }
 };
 
@@ -38,6 +51,12 @@ const mutations = {
     },
     setPostsStatus(state, status) {
         state.newsPostsStatus = status;
+    },
+    updateMessage(state, post) {
+        state.postMessage = post;
+    },
+    pushPost(state, post) {
+        state.newsPosts.data.unshift(post);
     }
 };
 
