@@ -21,7 +21,7 @@
         <transition name="fade">
           <button
             v-if="postMessage"
-            @click="store.$dispatch('postMessage')"
+            @click="$store.dispatch('postMessage')"
             class="bg-gray-200 ml-2 px-3 py-1 rounded-full"
           >Post</button>
         </transition>
@@ -45,7 +45,6 @@
 import _ from "lodash";
 export default {
   name: "NewPost",
-
   computed: {
     postMessage: {
       get() {

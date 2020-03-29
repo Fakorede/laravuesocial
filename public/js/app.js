@@ -21726,7 +21726,7 @@ var render = function() {
                     staticClass: "bg-gray-200 ml-2 px-3 py-1 rounded-full",
                     on: {
                       click: function($event) {
-                        return _vm.store.$dispatch("postMessage")
+                        return _vm.$store.dispatch("postMessage")
                       }
                     }
                   },
@@ -38971,8 +38971,8 @@ var mutations = {
   setPostsStatus: function setPostsStatus(state, status) {
     state.newsPostsStatus = status;
   },
-  updateMessage: function updateMessage(state, post) {
-    state.postMessage = post;
+  updateMessage: function updateMessage(state, message) {
+    state.postMessage = message;
   },
   pushPost: function pushPost(state, post) {
     state.newsPosts.data.unshift(post);
@@ -38983,9 +38983,9 @@ var mutations = {
 };
 /* harmony default export */ __webpack_exports__["default"] = ({
   state: state,
+  getters: getters,
   actions: actions,
-  mutations: mutations,
-  getters: getters
+  mutations: mutations
 });
 
 /***/ }),
@@ -39113,9 +39113,9 @@ var mutations = {
 };
 /* harmony default export */ __webpack_exports__["default"] = ({
   state: state,
+  getters: getters,
   actions: actions,
-  mutations: mutations,
-  getters: getters
+  mutations: mutations
 });
 
 /***/ }),

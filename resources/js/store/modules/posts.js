@@ -60,8 +60,8 @@ const mutations = {
     setPostsStatus(state, status) {
         state.newsPostsStatus = status;
     },
-    updateMessage(state, post) {
-        state.postMessage = post;
+    updateMessage(state, message) {
+        state.postMessage = message;
     },
     pushPost(state, post) {
         state.newsPosts.data.unshift(post);
@@ -73,7 +73,7 @@ const mutations = {
 
 export default {
     state,
+    getters,
     actions,
-    mutations,
-    getters
+    mutations
 };
